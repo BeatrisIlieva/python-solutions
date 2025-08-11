@@ -1,37 +1,35 @@
 def merge(words, start_index, end_index):
-    words_copy = words.copy()
-    new_word = ''
-    valid_end_index = end_index + 1 if end_index + \
-        1 < len(words) else len(words) - 1
+    valid_start_index = max(0, start_index)
+    valid_end_index = min(end_index + 1, len(words))
 
-    for index in range(start_index, valid_end_index):
-        new_word += words_copy[index]
+    if valid_start_index >= len(words) or valid_start_index >= valid_end_index:
+        return words
 
-    del words[start_index:valid_end_index]
+    new_word = ''.join(words[valid_start_index:valid_end_index])
 
-    words.insert(start_index, new_word)
+    words = words[:valid_start_index] + [new_word] + words[valid_end_index:]
 
     return words
 
 
-def divide(words, index, partitions):
-    partition_length = len(words[index]) // partitions
+def divide(words, index, partitions): 
+    word = words[index]
+    base_size = len(word) // partitions
 
-    word_as_list = list(words[index])
+    new_words = []
+    pos = 0
 
-    splitted_words = []
-
-    while word_as_list:
-        if len(word_as_list) < partition_length * 2:
-            word_as_list.append(''.join(word_as_list[0]))
+    for i in range(partitions):
+        if i == partitions - 1:
+            new_words.append(word[pos:])
             break
-        
-        splitted_words.extend(word_as_list[0:partition_length])
-        del word_as_list[0:partition_length]
 
-    words.pop(index)
-    words.insert(index, ''.join(splitted_words))
-    
+        new_words.append(word[pos:pos + base_size])
+
+        pos += base_size
+
+    words = words[:index] + new_words + words[index + 1:]
+
     return words
 
 
