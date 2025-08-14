@@ -1,5 +1,7 @@
-my_dict = {'b': 1, 'c': 2, 'a': 3}
+from collections import deque
 
-sorted_dict = sum(my_dict, key=lambda x: x[1])
+my_deque = deque()
 
-print(sorted_dict)
+el = my_deque.popleft()
+
+print(el)
